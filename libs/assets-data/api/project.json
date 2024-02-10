@@ -1,0 +1,16 @@
+{
+  "name": "assets-data-api",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/assets-data/api/src",
+  "projectType": "library",
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/assets-data/api/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
