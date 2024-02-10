@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "assets-manager-api": ["libs/assets-manager/api/src/index.ts"],
       "gateway-api-assets": ["libs/gateway/api/assets/src/index.ts"]
     }
   },
