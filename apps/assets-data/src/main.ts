@@ -4,8 +4,9 @@
  */
 
 import { Logger } from '@nestjs/common';
-import { Transport, MicroserviceOptions } from '@nestjs/microservices';
+import { MicroserviceOptions } from '@nestjs/microservices';
 import { NestFactory } from '@nestjs/core';
+import { Logger as PinoLogger } from 'nestjs-pino';
 
 import { QueueService } from 'queue';
 import { AppModule } from './app/app.module';
@@ -16,6 +17,10 @@ async function bootstrap() {
   const rmqService = app.get<QueueService>(QueueService);
 
   app.connectMicroservice<MicroserviceOptions>(rmqService.getOptions());
+
+  const logger = app.get(PinoLogger);
+
+  app.useLogger(logger);
 
   await app.startAllMicroservices();
 

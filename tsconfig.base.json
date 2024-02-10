@@ -1,26 +1,29 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2017", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "assets-data-api": ["libs/assets-data/api/src/index.ts"],
-      "assets-manager-api": ["libs/assets-manager/api/src/index.ts"],
-      "assets-manager-client": ["libs/assets-manager/client/src/index.ts"],
-      "gateway-api-assets": ["libs/gateway/api/assets/src/index.ts"],
-      "queue": ["libs/shared/queue/src/index.ts"]
-    }
-  },
-  "exclude": ["node_modules", "tmp"]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "rootDir": ".",
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es2015",
+        "module": "esnext",
+        "lib": ["es2017", "dom"],
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "assets-data-api": ["libs/assets-data/api/src/index.ts"],
+            "assets-manager-api": ["libs/assets-manager/api/src/index.ts"],
+            "assets-manager-client": [
+                "libs/assets-manager/client/src/index.ts"
+            ],
+            "gateway-api-assets": ["libs/gateway/api/assets/src/index.ts"],
+            "mongo-client": ["libs/shared/mongo-client/src/index.ts"],
+            "queue": ["libs/shared/queue/src/index.ts"]
+        }
+    },
+    "exclude": ["node_modules", "tmp"]
 }
