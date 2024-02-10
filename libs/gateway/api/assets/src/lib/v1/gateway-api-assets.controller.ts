@@ -1,28 +1,36 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { PinoLogger } from 'nestjs-pino';
 
-import { AssetsV1Service } from './assets-v1.service';
-import { TDownloadLinkInputV1 } from '../interfaces'
+import { GatewayApiAssetsService } from './gateway-api-assets.service';
+import { TDownloadLinkInputV1 } from './interfaces'
 import { err } from 'pino-std-serializers';
 
 @Controller('assets')
-export class AssetsV1Controller {
+export class GatewayApiAssetsController {
   constructor(
-    private assetsService: AssetsV1Service,
+    private assetsService: GatewayApiAssetsService,
     private readonly logger: PinoLogger,
   ) {}
 
+  @Get()
+  getData() {
+    return this.assetsService.getData();
+  }
+  
   @Post()
   async createTask(
     @Body() downloadLinkInput: TDownloadLinkInputV1,
   ) {
 
     try {
-      const downloadAssetLinkResult = await this.assetsService.downloadAssetLink(downloadLinkInput);
+      console.log('downloadLinkInput');
+      console.log(downloadLinkInput);
+      
+      const downloadLinkResult = await this.assetsService.downloadLink(downloadLinkInput);
   
-      if(downloadAssetLinkResult.isOk()) {
+      if(downloadLinkResult.isOk()) {
 
-        const downloadLinkValue = downloadAssetLinkResult.value;
+        const downloadLinkValue = downloadLinkResult.value;
         return {
           status: 200,
           body: {
@@ -37,8 +45,8 @@ export class AssetsV1Controller {
         status: 500,
         body: {
           data: null,
-          message: downloadAssetLinkResult.error.message,
-          error: downloadAssetLinkResult.error,
+          message: downloadLinkResult.error.message,
+          error: downloadLinkResult.error,
         },
       }
     } catch (err: Error | unknown) {

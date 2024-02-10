@@ -5,5 +5,13 @@ config();
 const { env } = process;
 
 export const configuration = () => {
-    return {};
+  const assetsManagerUrl = env.ASETS_MANAGEMENT_URL;
+
+  if (assetsManagerUrl) {
+    return {
+      assetsManagerUrl,
+    };
+  }
+
+  throw new Error('Missing Assets Manager Url');
 };

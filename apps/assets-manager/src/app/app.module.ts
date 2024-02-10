@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-
-import { GatewayApiAssetsModule } from 'gateway-api-assets';
+import { AssetsManagerApiV1Module } from 'assets-manager-api'
 import { configuration } from '../config';
 
 @Module({
@@ -10,7 +9,7 @@ import { configuration } from '../config';
       isGlobal: true,
       load: [configuration],
     }),
-    GatewayApiAssetsModule
+    AssetsManagerApiV1Module
   ],
   controllers: [],
   providers: [],

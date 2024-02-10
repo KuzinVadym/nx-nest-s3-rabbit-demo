@@ -5,7 +5,7 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "parserOptions": {
-        "project": ["apps/gateway/api/tsconfig.*?.json"]
+        "project": ["apps/assets-manager/tsconfig.*?.json"]
       },
       "rules": {}
     },
