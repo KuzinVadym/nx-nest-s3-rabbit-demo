@@ -12,3 +12,4 @@ export class CreateAssetDto {
   @IsObject()
   metadata!: Object;
 }
+

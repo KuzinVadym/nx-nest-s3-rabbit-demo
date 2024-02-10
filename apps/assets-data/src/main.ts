@@ -19,13 +19,22 @@ async function bootstrap() {
   app.connectMicroservice<MicroserviceOptions>(rmqService.getOptions());
 
   const logger = app.get(PinoLogger);
-
   app.useLogger(logger);
 
   await app.startAllMicroservices();
-
   Logger.log(
     `🚀 Assetst-Data ready to receive events via the RabbitMQ`
+  );
+
+  const globalPrefix = 'api/v1';
+  app.setGlobalPrefix(globalPrefix);
+  app.enableCors();
+
+  const port = process.env.ASSETS_DATA_PORT || 3002;
+  
+  await app.listen(port);
+  Logger.log(
+    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
   );
 }
 

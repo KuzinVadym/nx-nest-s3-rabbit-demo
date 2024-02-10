@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { AbstractSchema } from 'mongo-client';
+import { AbstractSchema } from './abstract.schema';
 
 @Schema({ versionKey: false })
 export class Asset extends AbstractSchema {

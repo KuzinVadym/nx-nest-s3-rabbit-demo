@@ -1,22 +1,21 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import * as crypto from 'crypto';
 import { PinoLogger } from 'nestjs-pino';
-import { Result, ResultAsync, err, ok } from 'neverthrow';
-
+import axios, { AxiosError } from 'axios';
+import { ResultAsync, err, ok } from 'neverthrow';
 import {ExifParserFactory} from "ts-exif-parser";
 
+import { S3ClientService } from 's3-client';
+import { ASSETS_DATA_SERVICE, TCreateAssetEventPayload } from 'queue';
 import { TDownloadLinkPayloadV1 } from 'assets-manager-client';
 import { TDownloadAssetResult, TDownloadLinkResult } from '../interfaces';
-import { S3BuckerService } from './s3-bucket.service';
-import axios, { Axios, AxiosError } from 'axios';
-import { ASSETS_DATA_SERVICE, TCreateAssetEventPayload } from 'queue';
-import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class AssetsManagerApiV1Service {
     constructor(
       private readonly logger: PinoLogger,
-      private readonly s3BuckerService: S3BuckerService,
+      private readonly s3BuckerService: S3ClientService,
       @Inject(ASSETS_DATA_SERVICE) private assetsQueueClient: ClientProxy,
       ) {}
 
@@ -42,9 +41,6 @@ export class AssetsManagerApiV1Service {
         if (addToBucketResult.isErr()) {
           return err(addToBucketResult.error);
         }
-
-        console.log('addToBucketResult.value');
-        console.log(addToBucketResult.value);
 
         // extract metadata
         const assetMetadata = this.extractAssetMetadata(assetBuffer);

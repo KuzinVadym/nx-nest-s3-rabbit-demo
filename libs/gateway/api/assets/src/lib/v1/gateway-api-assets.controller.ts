@@ -21,11 +21,7 @@ export class GatewayApiAssetsController {
   async createTask(
     @Body() downloadLinkInput: TDownloadLinkInputV1,
   ) {
-
     try {
-      console.log('downloadLinkInput');
-      console.log(downloadLinkInput);
-      
       const downloadLinkResult = await this.assetsService.downloadLink(downloadLinkInput);
   
       if(downloadLinkResult.isOk()) {
