@@ -1,1 +1,2 @@
-export * from './v1/lib/assets-v1.module';
+export * from './lib/v1/gateway-api-assets.module';
+export * from './lib/v1/interfaces';
