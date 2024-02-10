@@ -1,0 +1,31 @@
+{
+  "name": "assets-data",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/assets-data/src",
+  "projectType": "application",
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "assets-data:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "assets-data:build:development"
+        },
+        "production": {
+          "buildTarget": "assets-data:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/assets-data/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
