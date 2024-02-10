@@ -4,14 +4,20 @@
  */
 
 import { Logger } from '@nestjs/common';
+import { Logger as PinoLogger } from 'nestjs-pino';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   const globalPrefix = 'api/v1';
   
+  const logger = app.get(PinoLogger);
+
+  app.useLogger(logger);
+
   app.setGlobalPrefix(globalPrefix);
   app.enableCors();
 

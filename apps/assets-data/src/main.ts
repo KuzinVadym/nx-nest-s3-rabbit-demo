@@ -4,18 +4,23 @@
  */
 
 import { Logger } from '@nestjs/common';
+import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import { NestFactory } from '@nestjs/core';
 
+import { QueueService } from 'queue';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const globalPrefix = 'api/v1';
-  app.setGlobalPrefix(globalPrefix);
-  const port = process.env.ASSETS_DATA_PORT || 3002;
-  await app.listen(port);
+
+  const rmqService = app.get<QueueService>(QueueService);
+
+  app.connectMicroservice<MicroserviceOptions>(rmqService.getOptions());
+
+  await app.startAllMicroservices();
+
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 Assetst-Data ready to receive events via the RabbitMQ`
   );
 }
 

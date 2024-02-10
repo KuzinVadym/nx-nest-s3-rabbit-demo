@@ -18,7 +18,8 @@
       "assets-data-api": ["libs/assets-data/api/src/index.ts"],
       "assets-manager-api": ["libs/assets-manager/api/src/index.ts"],
       "assets-manager-client": ["libs/assets-manager/client/src/index.ts"],
-      "gateway-api-assets": ["libs/gateway/api/assets/src/index.ts"]
+      "gateway-api-assets": ["libs/gateway/api/assets/src/index.ts"],
+      "queue": ["libs/shared/queue/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
