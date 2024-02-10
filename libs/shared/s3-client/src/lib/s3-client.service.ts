@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { ResultAsync, err, ok } from 'neverthrow';
 import { PinoLogger } from 'nestjs-pino';
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-import { TDownloadLinkPayloadV1 } from 'assets-manager-client';
-import { TDownloadLinkResult } from '../interfaces';
+import { TDownloadLinkResult, TGetSignedUrlResult } from '../interfaces';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class S3BuckerService {
+export class S3ClientService {
     s3: S3Client;
     awsBucketName: string;
 
@@ -59,6 +59,29 @@ export class S3BuckerService {
       } catch (error: Error | unknown) {
         return this.returnError(error, 'addToBucket')
       }   
+    }
+
+    async getSignedUrl(name: string): Promise<TGetSignedUrlResult> {
+        try {
+            const command = new GetObjectCommand({
+                Bucket: this.awsBucketName,
+                Key: name,
+            });
+
+            const getSignedUrlResult = await ResultAsync.fromPromise(
+                getSignedUrl(this.s3, command, { expiresIn: 3600 }),
+                (err) => err as Error
+              );
+
+            if(getSignedUrlResult.isErr()) {
+              this.logger.error(getSignedUrlResult.error.message);
+              return err(getSignedUrlResult.error);
+            }  
+
+            return ok(getSignedUrlResult.value);
+        } catch (error) {
+            return this.returnError(error, 'getSignedUrl')
+        }
     }
 
     private returnError = (error: Error | unknown, method: string) => {

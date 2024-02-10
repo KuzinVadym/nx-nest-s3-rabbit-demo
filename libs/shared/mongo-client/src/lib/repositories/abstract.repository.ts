@@ -7,7 +7,7 @@ import {
   SaveOptions,
   Connection,
 } from 'mongoose';
-import { AbstractSchema } from './abstract.schema';
+import { AbstractSchema } from '../shemas/abstract.schema';
 
 export abstract class AbstractRepository<TAsset extends AbstractSchema> {
   protected abstract readonly logger: Logger;

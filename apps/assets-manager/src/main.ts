@@ -12,12 +12,10 @@ import { AppModule } from './app/app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const globalPrefix = 'api/v1';
-  
   const logger = app.get(PinoLogger);
-
   app.useLogger(logger);
 
+  const globalPrefix = 'api/v1';
   app.setGlobalPrefix(globalPrefix);
   app.enableCors();
 

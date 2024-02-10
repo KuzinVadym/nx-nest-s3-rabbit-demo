@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { AbstractRepository } from 'mongo-client';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
-import { Asset } from '../../shemas/assets.schema';
+import { Asset } from '../shemas/assets.schema';
 
 @Injectable()
 export class AssetsRepository extends AbstractRepository<Asset> {

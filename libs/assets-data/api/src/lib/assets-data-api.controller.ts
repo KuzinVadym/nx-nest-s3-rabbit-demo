@@ -1,8 +1,9 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { AssetsDataApiService } from './assets-data-api.service';
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
 import { QueueService, TCreateAssetEventPayload } from 'queue';
 import { PinoLogger } from 'nestjs-pino';
+import { get } from 'lodash';
 
 @Controller()
 export class AssetsDataApiController {
@@ -25,5 +26,44 @@ export class AssetsDataApiController {
 
     this.logger.info('Message successfully acknowledged');
     this.queueService.ack(context);
+  }
+
+  @Get()
+  async getAssets() {
+    try {
+      const assetsResult = await this.assetsDataApiService.getAssets();
+
+      if(assetsResult.isOk()) {
+
+        const assets = assetsResult.value;
+        return {
+          status: 200,
+          body: {
+            data: assets,
+            message: 'OK',
+            error: null,
+          },
+        }
+      }
+      
+      return {
+        status: 500,
+        body: {
+          data: null,
+          message: get(assetsResult, 'error.message') || 'Error ocuer during handling get Assetsrequest',
+          error: assetsResult.error,
+        },
+      }  
+    } catch (error) {
+      this.logger.error(error)
+     return {
+        status: 500,
+        body: {
+          data: null,
+          message: 'Error ocuer during handling get Assetsrequest',
+          error: error,
+        },
+      }
+    }
   }
 }

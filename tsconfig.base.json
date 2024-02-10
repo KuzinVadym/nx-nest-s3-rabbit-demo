@@ -22,7 +22,8 @@
             ],
             "gateway-api-assets": ["libs/gateway/api/assets/src/index.ts"],
             "mongo-client": ["libs/shared/mongo-client/src/index.ts"],
-            "queue": ["libs/shared/queue/src/index.ts"]
+            "queue": ["libs/shared/queue/src/index.ts"],
+            "s3-client": ["libs/shared/s3-client/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]
