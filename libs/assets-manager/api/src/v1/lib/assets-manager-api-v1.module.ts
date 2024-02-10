@@ -4,10 +4,13 @@ import { AssetsManagerApiV1Controller } from './assets-manager-api-v1.controller
 import { AssetsManagerApiV1Service } from './assets-manager-api-v1.service';
 import { LoggerModule } from 'nestjs-pino';
 import { S3BuckerService } from './s3-bucket.service';
-
+import { ASSETS_DATA_SERVICE, QueueModule } from 'queue';
 @Module({
   imports: [
     LoggerModule.forRoot(),
+    QueueModule.register({
+      name: ASSETS_DATA_SERVICE,
+    }),
   ],
   controllers: [AssetsManagerApiV1Controller],
   providers: [

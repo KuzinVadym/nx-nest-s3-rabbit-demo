@@ -1,7 +1,7 @@
 import { Result } from 'neverthrow';
 
 export type TDownloadLinkInputV1 = {
-    name: string;
+    category: string;
     url: string;
 }
 

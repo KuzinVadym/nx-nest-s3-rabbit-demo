@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { Result } from 'neverthrow';
 
 export type TDownloadLinkPayloadV1 = {
-    name: string;
+    category: string;
     url: string;
 }
 
