@@ -7,13 +7,15 @@ const { env } = process;
 export const configuration = () => {
   const rabbitMQUrl = env.RABBIT_MQ_URL;
   const rabbitMQQueueName = env.RABBIT_MQ_QUEUE_NAME;
+  const mongoUrl = env.MONGODB_URI;
 
-  if (rabbitMQUrl && rabbitMQQueueName) {
+  if (rabbitMQUrl && rabbitMQQueueName && mongoUrl) {
     return {
       rabbitMQUrl,
-      rabbitMQQueueName
+      rabbitMQQueueName,
+      mongoUrl
     };
   }
 
-  throw new Error('Missing Some of RabbitMQ Credentials');
+  throw new Error('Missing Some of RabbitMQ or Mongo Credentials');
 };

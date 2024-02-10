@@ -25,7 +25,7 @@ export class QueueService {
         options: {
             urls: [this.queueUrl],
             queue: this.queueName,
-            noAck: true,
+            noAck: false,
             persistent: true,
         },
         };
@@ -35,5 +35,11 @@ export class QueueService {
         const channel = context.getChannelRef();
         const originalMessage = context.getMessage();
         channel.ack(originalMessage);
+    }
+
+    reject(context: RmqContext) {
+        const channel = context.getChannelRef();
+        const originalMessage = context.getMessage();
+        channel.reject(originalMessage);
     }
 }
