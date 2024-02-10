@@ -1,11 +1,18 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AssetsV1Module } from 'gateway-api-assets';
+import { configuration } from '../config';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [configuration],
+    }),
+    AssetsV1Module
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
