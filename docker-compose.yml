@@ -36,6 +36,59 @@ services:
     networks:
         - rabbitmq_nodejs
 
+  assets-data:
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    build:
+      context: ./
+      dockerfile: apps/assets-data/Dockerfile
+    ports:
+      - '3002:3002'
+    depends_on:
+      - 'mongo'
+      - 'rabbitmq'
+    restart: always
+    environment:
+      RABBIT_MQ_URL: ${RABBIT_MQ_URL}
+      RABBIT_MQ_QUEUE_NAME: ${RABBIT_MQ_QUEUE_NAME}
+      AWS_BUCKET_NAME: ${AWS_BUCKET_NAME}
+      AWS_BUCKET_REGION: ${AWS_BUCKET_REGION}
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      MONGODB_URL: ${DOCKER_COMPOSE_MONGODB_URL}
+
+  assets-manager:
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    build:
+      context: ./
+      dockerfile: apps/assets-manager/Dockerfile
+    ports:
+      - '3001:3001'
+    depends_on:
+      - 'rabbitmq'
+    restart: always
+    environment:
+      RABBIT_MQ_URL: ${RABBIT_MQ_URL}
+      RABBIT_MQ_QUEUE_NAME: ${RABBIT_MQ_QUEUE_NAME}
+      AWS_BUCKET_NAME: ${AWS_BUCKET_NAME}
+      AWS_BUCKET_REGION: ${AWS_BUCKET_REGION}
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+
+  gateway-api:
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    build:
+      context: ./
+      dockerfile: apps/gateway/api/Dockerfile
+    ports:
+      - '3000:3000'
+    restart: always
+    environment:
+      ASETS_MANAGEMENT_URL: ${ASETS_MANAGEMENT_URL}
+      ASETS_DATA_URL: ${ASETS_DATA_URL}
+
 volumes:
   mongodb_data:
     driver: local

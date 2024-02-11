@@ -4,6 +4,26 @@
   "sourceRoot": "apps/assets-manager/src",
   "projectType": "application",
   "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/assets-manager/",
+        "main": "apps/assets-manager/src/main.ts",
+        "tsConfig": "apps/assets-manager/tsconfig.app.json",
+        "webpackConfig": "apps/assets-manager/webpack.config.js",
+        "generatePackageJson": true
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        }
+      }
+    },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
