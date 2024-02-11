@@ -4,28 +4,38 @@ import { err, ok } from 'neverthrow';
 import { AxiosError } from 'axios';
 import { get } from 'lodash';
 
-import { TDownloadLinkInputV1, TDownloadLinkResult } from './interfaces';
+import { AssetsDataClientService } from 'assets-data-client';
 import { AssetsManagerClientV1Service } from 'assets-manager-client';
-
+import { TDownloadLinkInputV1, TDownloadLinkResult, TGetAssetsResult } from './interfaces';
 
 @Injectable()
 export class GatewayApiAssetsService {
     constructor(
         private readonly logger: PinoLogger,
         private readonly assetsManagerClient: AssetsManagerClientV1Service,
+        private readonly assetsDataClientService: AssetsDataClientService,
       ) {}
 
-    getData(): { message: string } {
-        return { message: 'Hello API' };
+    async getAssets(): Promise<TGetAssetsResult> {
+      const getAssetsResult = await this.assetsDataClientService.getAssets();
+
+      if( getAssetsResult.isErr()) {
+        this.logger.error(getAssetsResult.error);
+        return this.returnError(getAssetsResult.error)
       }
+
+      const assets = getAssetsResult.value.data.body.data
+
+      return ok(assets)
+    }
 
     async downloadLink(payload: TDownloadLinkInputV1): Promise<TDownloadLinkResult> {
     
-      const tempResult = await this.assetsManagerClient.downloadLink(payload);
+      const downloadLinkResult = await this.assetsManagerClient.downloadLink(payload);
 
-      if( tempResult.isErr()) {
-        this.logger.error(tempResult.error);
-        return this.returnError(tempResult.error)
+      if( downloadLinkResult.isErr()) {
+        this.logger.error(downloadLinkResult.error);
+        return this.returnError(downloadLinkResult.error)
       }
 
       return ok({ status: 'OK' });

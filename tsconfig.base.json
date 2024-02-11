@@ -16,6 +16,7 @@
         "baseUrl": ".",
         "paths": {
             "assets-data-api": ["libs/assets-data/api/src/index.ts"],
+            "assets-data-client": ["libs/assets-data/client/src/index.ts"],
             "assets-manager-api": ["libs/assets-manager/api/src/index.ts"],
             "assets-manager-client": [
                 "libs/assets-manager/client/src/index.ts"

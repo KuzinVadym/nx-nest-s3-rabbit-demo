@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import { Result } from 'neverthrow';
 
 export type TDownloadLinkPayloadV1 = {
@@ -6,4 +6,4 @@ export type TDownloadLinkPayloadV1 = {
     url: string;
 }
 
-export type TDownloadLinkResultV1 = Result<unknown, AxiosError>;
+export type TDownloadLinkResultV1 = Result<AxiosResponse, AxiosError>;
