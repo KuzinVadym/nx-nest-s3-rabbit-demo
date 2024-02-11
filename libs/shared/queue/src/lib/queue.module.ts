@@ -13,7 +13,7 @@ interface RmqModuleOptions {
   exports: [QueueService],
 })
 export class QueueModule {
-  static register({ name }: RmqModuleOptions): DynamicModule {
+  static registerAsync({ name }: RmqModuleOptions): DynamicModule {
     return {
       module: QueueModule,
       imports: [

@@ -7,7 +7,7 @@ import { ResultAsync, err, ok } from 'neverthrow';
 import {ExifParserFactory} from "ts-exif-parser";
 
 import { S3ClientService } from 's3-client';
-import { ASSETS_DATA_SERVICE, TCreateAssetEventPayload } from 'queue';
+import { ASSETS_QUEUE_SERVICE, CREATE_ASSET_PATTERN, TCreateAssetEventPayload } from 'queue';
 import { TDownloadLinkPayloadV1 } from 'assets-manager-client';
 import { TDownloadAssetResult, TDownloadLinkResult } from '../interfaces';
 
@@ -16,7 +16,7 @@ export class AssetsManagerApiV1Service {
     constructor(
       private readonly logger: PinoLogger,
       private readonly s3BuckerService: S3ClientService,
-      @Inject(ASSETS_DATA_SERVICE) private assetsQueueClient: ClientProxy,
+      @Inject(ASSETS_QUEUE_SERVICE) private assetsQueueClient: ClientProxy,
       ) {}
 
     getData(): { message: string } {
@@ -25,6 +25,8 @@ export class AssetsManagerApiV1Service {
 
     async downloadLink(downloadLinkPayload: TDownloadLinkPayloadV1): Promise<TDownloadLinkResult> {
       try {
+        this.logger.info(`Download Asset from link: ${downloadLinkPayload.url}`);
+        
         // dowload asset
         const assetBufferResult = await this.downloadAsset(downloadLinkPayload.url);
 
@@ -94,7 +96,7 @@ export class AssetsManagerApiV1Service {
     }
 
     private sendNewCreateAssetEvent = async (createAssetEventPayload: TCreateAssetEventPayload): Promise<void> => {
-      await this.assetsQueueClient.emit('create_asset', createAssetEventPayload)
+      await this.assetsQueueClient.emit(CREATE_ASSET_PATTERN, createAssetEventPayload)
     }
 
     private returnError = (error: Error | unknown, method: string) => {

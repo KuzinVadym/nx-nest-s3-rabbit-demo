@@ -15,6 +15,7 @@ export abstract class AbstractRepository<TAsset extends AbstractSchema> {
   constructor(
     protected readonly model: Model<TAsset>,
     private readonly connection: Connection,
+    private readonly modelName: string,
   ) {}
 
   async create(
@@ -34,12 +35,17 @@ export abstract class AbstractRepository<TAsset extends AbstractSchema> {
     const asset = await this.model.findOne(filterQuery, {}, { lean: true });
 
     if (!asset) {
-      this.logger.warn('Asset not found with filterQuery', filterQuery);
-      throw new NotFoundException('Asset not found.');
+      this.logger.warn(`${this.modelName} not found with filterQuery`, filterQuery);
+      throw new NotFoundException(`${this.modelName} not found.`);
     }
 
     return asset as TAsset;
   }
+
+  async find(filterQuery: FilterQuery<TAsset>) {
+    return this.model.find(filterQuery, {}, { lean: true });
+  }
+
 
   async findOneAndUpdate(
     filterQuery: FilterQuery<TAsset>,
@@ -51,26 +57,11 @@ export abstract class AbstractRepository<TAsset extends AbstractSchema> {
     });
 
     if (!Asset) {
-      this.logger.warn(`Asset not found with filterQuery:`, filterQuery);
-      throw new NotFoundException('Asset not found.');
+      this.logger.warn(`${this.modelName} not found with filterQuery:`, filterQuery);
+      throw new NotFoundException(`${this.modelName} not found.`);
     }
 
     return Asset;
-  }
-
-  async upsert(
-    filterQuery: FilterQuery<TAsset>,
-    Asset: Partial<TAsset>,
-  ) {
-    return this.model.findOneAndUpdate(filterQuery, Asset, {
-      lean: true,
-      upsert: true,
-      new: true,
-    });
-  }
-
-  async find(filterQuery: FilterQuery<TAsset>) {
-    return this.model.find(filterQuery, {}, { lean: true });
   }
 
   async startTransaction() {

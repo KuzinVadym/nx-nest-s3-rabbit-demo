@@ -3,7 +3,6 @@ import { PinoLogger } from 'nestjs-pino';
 
 import { GatewayApiAssetsService } from './gateway-api-assets.service';
 import { TDownloadLinkInputV1 } from './interfaces'
-import { err } from 'pino-std-serializers';
 
 @Controller('assets')
 export class GatewayApiAssetsController {

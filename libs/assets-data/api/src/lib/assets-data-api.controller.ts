@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { AssetsDataApiService } from './assets-data-api.service';
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
-import { QueueService, TCreateAssetEventPayload } from 'queue';
+import { QueueService, CREATE_ASSET_PATTERN, TCreateAssetEventPayload } from 'queue';
 import { PinoLogger } from 'nestjs-pino';
 import { get } from 'lodash';
 
@@ -13,14 +13,14 @@ export class AssetsDataApiController {
     private readonly queueService: QueueService,
   ) {}
 
-  @EventPattern('create_asset')
+  @EventPattern(CREATE_ASSET_PATTERN)
   async handleOrderCreated(@Payload() payload: TCreateAssetEventPayload, @Ctx() context: RmqContext) {
-    this.logger.info(`Receive new "create_asset" event`);
+    this.logger.info(`Receive new ${CREATE_ASSET_PATTERN} event`);
 
     const createAssetResult = await this.assetsDataApiService.createAsset(payload);
 
     if (createAssetResult.isErr()) {
-      this.logger.error(`Reject message from "create_asset" queue due to error during saving asset to DB`)
+      this.logger.error(`Reject message from ${CREATE_ASSET_PATTERN} queue due to error during saving asset to DB`)
       this.queueService.reject(context);
     }
 

@@ -5,7 +5,6 @@ import { Result, ResultAsync, err, ok } from 'neverthrow';
 import { S3ClientService } from 's3-client';
 import { AssetsRepository } from 'mongo-client';
 import { CreateAssetDto } from '../dto';
-import { set } from 'lodash';
 import { TAssets, TAssetsWithSignedURL, TGetAssetsResult } from '../interfaces';
 
 @Injectable()
@@ -18,6 +17,8 @@ export class AssetsDataApiService {
 
     async createAsset(createAssetPayload: CreateAssetDto) {
         try {
+            this.logger.info(`Create new Asset: ${createAssetPayload.name}`);
+
             return ResultAsync.fromPromise(
                 this.assetsRepository.create(createAssetPayload),
                 (err) => err 
@@ -29,6 +30,8 @@ export class AssetsDataApiService {
         
     async getAssets(): Promise<TGetAssetsResult> {
       try {
+        this.logger.info(`Find assets`);
+
         const assetResult = await ResultAsync.fromPromise(
             this.assetsRepository.find({}),
             (err) => err 
@@ -53,8 +56,11 @@ export class AssetsDataApiService {
 
     private async updateAssetsWithSignedUrl(assets: TAssets[]): Promise<Result<TAssetsWithSignedURL[], Error>> {
       try {
-        let assetsWithSignedUrl: TAssetsWithSignedURL[] = [];
+        
+        const assetsWithSignedUrl: TAssetsWithSignedURL[] = [];
         for (const asset of assets) {
+          this.logger.info(`Update Asset - ${asset.name} - with SignedURL`);
+
           const assetUrlResult = await this.s3BuckerService.getSignedUrl(asset.name);
 
           if (assetUrlResult.isErr()) {
@@ -65,7 +71,9 @@ export class AssetsDataApiService {
             ...asset,
             assetUrl: assetUrlResult.value
           })
-        }  
+        }
+
+        
 
         return ok(assetsWithSignedUrl);
       } catch (error) {
