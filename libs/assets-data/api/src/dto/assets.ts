@@ -10,6 +10,6 @@ export class CreateAssetDto {
   category!: string;
 
   @IsObject()
-  metadata!: Object;
+  metadata!: Record<string, unknown>;
 }
 

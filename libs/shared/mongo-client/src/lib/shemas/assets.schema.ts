@@ -10,7 +10,7 @@ export class Asset extends AbstractSchema {
   category: string;
 
   @Prop({ type: Object, required: true })
-  metadata: Record<string, any>;
+  metadata: Record<string, unknown>;
 }
 
 export const AssetsSchema = SchemaFactory.createForClass(Asset);

@@ -1,6 +1,5 @@
 import { Result } from 'neverthrow';
 import { ObjectId } from 'mongodb';
-import { AxiosResponse } from 'axios';
 
 export type TDownloadLinkInputV1 = {
     category: string;
@@ -16,7 +15,7 @@ export type TAssets = {
     name: string;
     category: string;
     assetUrl: string;
-    metadata: Record<string, any>;
+    metadata: Record<string, unknown>;
 }
 
 export type TGetAssetsResult = Result<TAssets[], Error>

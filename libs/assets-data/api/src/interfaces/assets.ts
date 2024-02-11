@@ -5,7 +5,7 @@ export type TAssets = {
     _id: ObjectId
     name: string;
     category: string;
-    metadata: Record<string, any>;
+    metadata: Record<string, unknown>;
 }
 
 export type TAssetsWithSignedURL = {
@@ -13,7 +13,7 @@ export type TAssetsWithSignedURL = {
     name: string;
     category: string;
     assetUrl: string;
-    metadata: Record<string, any>;
+    metadata: Record<string, unknown>;
 }
 
 export type TGetAssetsResult = Result<TAssetsWithSignedURL[], Error>

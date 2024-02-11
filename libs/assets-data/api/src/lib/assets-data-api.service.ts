@@ -5,7 +5,6 @@ import { Result, ResultAsync, err, ok } from 'neverthrow';
 import { S3ClientService } from 's3-client';
 import { AssetsRepository } from 'mongo-client';
 import { CreateAssetDto } from '../dto';
-import { set } from 'lodash';
 import { TAssets, TAssetsWithSignedURL, TGetAssetsResult } from '../interfaces';
 
 @Injectable()
@@ -53,7 +52,7 @@ export class AssetsDataApiService {
 
     private async updateAssetsWithSignedUrl(assets: TAssets[]): Promise<Result<TAssetsWithSignedURL[], Error>> {
       try {
-        let assetsWithSignedUrl: TAssetsWithSignedURL[] = [];
+        const assetsWithSignedUrl: TAssetsWithSignedURL[] = [];
         for (const asset of assets) {
           const assetUrlResult = await this.s3BuckerService.getSignedUrl(asset.name);
 
