@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
 
+import { AssetsDataClientModule } from 'assets-data-client';
+import { AssetsManagerClientV1Module } from 'assets-manager-client';
 import { GatewayApiAssetsController } from './gateway-api-assets.controller';
 import { GatewayApiAssetsService } from './gateway-api-assets.service';
-import { AssetsManagerClientV1Module, AssetsManagerClientV1Service } from 'assets-manager-client';
 
 @Module({
   imports: [
     LoggerModule.forRoot(),
-    AssetsManagerClientV1Module
+    AssetsManagerClientV1Module,
+    AssetsDataClientModule
   ],
   controllers: [GatewayApiAssetsController],
   providers: [

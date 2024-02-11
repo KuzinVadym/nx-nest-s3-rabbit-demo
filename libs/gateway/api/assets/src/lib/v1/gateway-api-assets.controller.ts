@@ -13,8 +13,41 @@ export class GatewayApiAssetsController {
   ) {}
 
   @Get()
-  getData() {
-    return this.assetsService.getData();
+  async getAssets() {
+    try {
+      const getAssetsResult = await this.assetsService.getAssets();
+  
+      if(getAssetsResult.isOk()) {
+
+        const downloadLinkValue = getAssetsResult.value;
+        return {
+          status: 200,
+          body: {
+            data: downloadLinkValue,
+            message: 'OK',
+            error: null,
+          },
+        }
+      }
+      
+      return {
+        status: 500,
+        body: {
+          data: null,
+          message: getAssetsResult.error.message,
+          error: getAssetsResult.error,
+        },
+      }
+    } catch (err: Error | unknown) {
+      return {
+        status: 500,
+        body: {
+          data: null,
+          message: 'Error ocuer during handling Get Assets request',
+          error: err,
+        },
+      }
+    }
   }
   
   @Post()

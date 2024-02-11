@@ -13,16 +13,8 @@ services:
       - mongodb_data:/data/db
     ports:
       - 27017:27017
-
-  mongo-express:
-    image: mongo-express
-    restart: always
-    ports:
-      - 8081:8081
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
-      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+    networks:
+      - rabbitmq_mongo_nodejs
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -34,7 +26,7 @@ services:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
     networks:
-        - rabbitmq_nodejs
+        - rabbitmq_mongo_nodejs
 
   assets-data:
     extra_hosts:
@@ -49,13 +41,15 @@ services:
       - 'rabbitmq'
     restart: always
     environment:
-      RABBIT_MQ_URL: ${RABBIT_MQ_URL}
+      RABBIT_MQ_URL: ${DOCKER_COMPOSE_RABBIT_MQ_URL}
       RABBIT_MQ_QUEUE_NAME: ${RABBIT_MQ_QUEUE_NAME}
       AWS_BUCKET_NAME: ${AWS_BUCKET_NAME}
       AWS_BUCKET_REGION: ${AWS_BUCKET_REGION}
       AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       MONGODB_URL: ${DOCKER_COMPOSE_MONGODB_URL}
+    networks:
+      - rabbitmq_mongo_nodejs
 
   assets-manager:
     extra_hosts:
@@ -69,12 +63,14 @@ services:
       - 'rabbitmq'
     restart: always
     environment:
-      RABBIT_MQ_URL: ${RABBIT_MQ_URL}
+      RABBIT_MQ_URL: ${DOCKER_COMPOSE_RABBIT_MQ_URL}
       RABBIT_MQ_QUEUE_NAME: ${RABBIT_MQ_QUEUE_NAME}
       AWS_BUCKET_NAME: ${AWS_BUCKET_NAME}
       AWS_BUCKET_REGION: ${AWS_BUCKET_REGION}
       AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    networks:
+          - rabbitmq_mongo_nodejs
 
   gateway-api:
     extra_hosts:
@@ -86,13 +82,15 @@ services:
       - '3000:3000'
     restart: always
     environment:
-      ASETS_MANAGEMENT_URL: ${ASETS_MANAGEMENT_URL}
-      ASETS_DATA_URL: ${ASETS_DATA_URL}
+      ASETS_MANAGER_URL: ${DOCKER_COMPOSE_ASETS_MANAGER_URL}
+      ASETS_DATA_URL: ${DOCKER_COMPOSE_ASETS_DATA_URL}
+    networks:
+      - rabbitmq_mongo_nodejs
 
 volumes:
   mongodb_data:
     driver: local
 
 networks:
-  rabbitmq_nodejs:
+  rabbitmq_mongo_nodejs:
     driver: bridge  
