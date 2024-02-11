@@ -4,6 +4,26 @@
   "sourceRoot": "apps/gateway/api/src",
   "projectType": "application",
   "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/gateway/api/",
+        "main": "apps/gateway/api/src/main.ts",
+        "tsConfig": "apps/gateway/api/tsconfig.app.json",
+        "webpackConfig": "apps/gateway/api/webpack.config.js",
+        "generatePackageJson": true
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        }
+      }
+    },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
