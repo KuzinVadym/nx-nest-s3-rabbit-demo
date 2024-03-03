@@ -26,7 +26,7 @@ export class AssetsManagerApiV1Service {
     async downloadLink(downloadLinkPayload: TDownloadLinkPayloadV1): Promise<TDownloadLinkResult> {
       try {
         this.logger.info(`Download Asset from link: ${downloadLinkPayload.url}`);
-        
+
         // dowload asset
         const assetBufferResult = await this.downloadAsset(downloadLinkPayload.url);
 

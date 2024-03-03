@@ -12,8 +12,9 @@ export const configuration = () => {
   const awsAccessKey = env.AWS_ACCESS_KEY;
   const awsSecretAccessKey = env.AWS_SECRET_ACCESS_KEY;
   const mongoUrl = env.MONGODB_URL;
+  const postgresUrl = env.POSTGRES_URL;
 
-  if (awsBucketName && awsBucketRegion && awsAccessKey && awsSecretAccessKey && rabbitMQUrl && rabbitMQQueueName && mongoUrl) {
+  if (awsBucketName && awsBucketRegion && awsAccessKey && awsSecretAccessKey && rabbitMQUrl && rabbitMQQueueName && postgresUrl) {
     return {
       awsBucketName,
       awsBucketRegion,
@@ -21,7 +22,8 @@ export const configuration = () => {
       awsSecretAccessKey,
       rabbitMQUrl,
       rabbitMQQueueName,
-      mongoUrl
+      mongoUrl,
+      postgresUrl
     };
   }
 

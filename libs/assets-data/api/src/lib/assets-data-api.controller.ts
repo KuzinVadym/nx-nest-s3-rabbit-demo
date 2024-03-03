@@ -29,9 +29,9 @@ export class AssetsDataApiController {
   }
 
   @Get()
-  async getAssets() {
+  async findAssets() {
     try {
-      const assetsResult = await this.assetsDataApiService.getAssets();
+      const assetsResult = await this.assetsDataApiService.findAssets();
 
       if(assetsResult.isOk()) {
 

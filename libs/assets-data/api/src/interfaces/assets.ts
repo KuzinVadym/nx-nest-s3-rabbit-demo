@@ -1,19 +1,11 @@
 import { Result } from 'neverthrow';
-import { ObjectId } from 'mongodb'
 
-export type TAssets = {
-    _id: ObjectId
-    name: string;
-    category: string;
-    metadata: Record<string, unknown>;
-}
+import { TAsset } from 'assets-interfaces';
 
-export type TAssetsWithSignedURL = {
-    _id: ObjectId
-    name: string;
-    category: string;
+export type TAssetsWithSignedURL = TAsset & {
     assetUrl: string;
-    metadata: Record<string, unknown>;
 }
 
-export type TGetAssetsResult = Result<TAssetsWithSignedURL[], Error>
+export type TUpdatedAssetsWithSignedUrl = Promise<Result<TAssetsWithSignedURL[], Error>>
+
+export type TFindAssetsResult = Promise<Result<TAssetsWithSignedURL[], Error>>

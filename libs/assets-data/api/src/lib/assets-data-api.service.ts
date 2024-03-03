@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { PinoLogger } from 'nestjs-pino';
-import { Result, ResultAsync, err, ok } from 'neverthrow';
+import { err, ok } from 'neverthrow';
 
 import { S3ClientService } from 's3-client';
-import { AssetsRepository } from 'mongo-client';
-import { CreateAssetDto } from '../dto';
-import { TAssets, TAssetsWithSignedURL, TGetAssetsResult } from '../interfaces';
+import { AssetsRepository } from 'postgres-client';
+import { TAsset, TCreateAssetPayload, TMutateAssetResult } from 'assets-interfaces';
+import { TAssetsWithSignedURL, TFindAssetsResult, TUpdatedAssetsWithSignedUrl } from '../interfaces';
 
 @Injectable()
 export class AssetsDataApiService {
@@ -15,37 +15,37 @@ export class AssetsDataApiService {
         private readonly assetsRepository: AssetsRepository,
         ) {}
 
-    async createAsset(createAssetPayload: CreateAssetDto) {
+    async createAsset(createAssetPayload: TCreateAssetPayload): TMutateAssetResult {
         try {
             this.logger.info(`Create new Asset: ${createAssetPayload.name}`);
 
-            return ResultAsync.fromPromise(
-                this.assetsRepository.create(createAssetPayload),
-                (err) => err 
-            );
+            const assetCreateResult =  await this.assetsRepository.create(createAssetPayload);
+
+
+            if (assetCreateResult.isErr()) {
+              return err(assetCreateResult.error)
+            }
+
+            return ok(assetCreateResult.value);
         } catch (error: Error | unknown) {
           return this.returnError(error, 'createAsset')
         }
       }
         
-    async getAssets(): Promise<TGetAssetsResult> {
+    async findAssets(): TFindAssetsResult {
       try {
         this.logger.info(`Find assets`);
 
-        const assetResult = await ResultAsync.fromPromise(
-            this.assetsRepository.find({}),
-            (err) => err 
-        );
+        const assetResult = await this.assetsRepository.find({})
 
         if (assetResult.isErr()) {
-          this.logger.error(assetResult.error);
-          return this.returnError(assetResult.error, 'getAssets');
+          return err(assetResult.error);
         }
 
         const assetsWithSignedUrlResult = await this.updateAssetsWithSignedUrl(assetResult.value);
 
         if (assetsWithSignedUrlResult.isErr()) {
-          return this.returnError(assetsWithSignedUrlResult.error, 'getAssets');
+          return err(assetsWithSignedUrlResult.error);
         }
 
         return ok(assetsWithSignedUrlResult.value);
@@ -54,10 +54,10 @@ export class AssetsDataApiService {
       }
     }      
 
-    private async updateAssetsWithSignedUrl(assets: TAssets[]): Promise<Result<TAssetsWithSignedURL[], Error>> {
+    private async updateAssetsWithSignedUrl(assets: TAsset[]): TUpdatedAssetsWithSignedUrl {
       try {
-        
         const assetsWithSignedUrl: TAssetsWithSignedURL[] = [];
+
         for (const asset of assets) {
           this.logger.info(`Update Asset - ${asset.name} - with SignedURL`);
 
@@ -72,8 +72,6 @@ export class AssetsDataApiService {
             assetUrl: assetUrlResult.value
           })
         }
-
-        
 
         return ok(assetsWithSignedUrl);
       } catch (error) {

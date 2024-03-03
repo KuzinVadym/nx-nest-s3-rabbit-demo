@@ -14,7 +14,21 @@ services:
     ports:
       - 27017:27017
     networks:
-      - rabbitmq_mongo_nodejs
+      - rabbitmq_db_nodejs
+
+  postgres:
+    image: postgres:16
+    ports:
+      - '5432:5432'
+    restart: always
+    volumes:
+      - postgres_db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: postgres
+    networks:
+      - rabbitmq_db_nodejs  
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -26,7 +40,7 @@ services:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
     networks:
-        - rabbitmq_mongo_nodejs
+        - rabbitmq_db_nodejs
 
   assets-data:
     extra_hosts:
@@ -49,7 +63,7 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       MONGODB_URL: ${DOCKER_COMPOSE_MONGODB_URL}
     networks:
-      - rabbitmq_mongo_nodejs
+      - rabbitmq_db_nodejs
 
   assets-manager:
     extra_hosts:
@@ -70,7 +84,7 @@ services:
       AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
     networks:
-          - rabbitmq_mongo_nodejs
+          - rabbitmq_db_nodejs
 
   gateway-api:
     extra_hosts:
@@ -85,12 +99,13 @@ services:
       ASETS_MANAGER_URL: ${DOCKER_COMPOSE_ASETS_MANAGER_URL}
       ASETS_DATA_URL: ${DOCKER_COMPOSE_ASETS_DATA_URL}
     networks:
-      - rabbitmq_mongo_nodejs
+      - rabbitmq_db_nodejs
 
 volumes:
   mongodb_data:
     driver: local
+  postgres_db_data:
 
 networks:
-  rabbitmq_mongo_nodejs:
+  rabbitmq_db_nodejs:
     driver: bridge  
