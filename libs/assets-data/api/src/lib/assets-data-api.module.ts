@@ -3,19 +3,20 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { QueueModule } from 'queue';
 import { S3ClientModule } from 's3-client';
-import { MongoClientModule, Asset, AssetsSchema, AssetsRepository } from 'mongo-client';
+import { MongoClientModule } from 'mongo-client';
+import { PostgresClientModule } from 'postgres-client';
 import { AssetsDataApiController } from './assets-data-api.controller';
 import { AssetsDataApiService } from './assets-data-api.service';
 
 @Module({
   imports: [
     QueueModule,
-    MongoClientModule,
     S3ClientModule,
-    MongooseModule.forFeature([{ name: Asset.name, schema: AssetsSchema }]),
+    MongoClientModule,
+    PostgresClientModule,
   ],
   controllers: [AssetsDataApiController],
-  providers: [AssetsDataApiService, AssetsRepository],
+  providers: [AssetsDataApiService],
   exports: [AssetsDataApiService],
 })
 export class AssetsDataApiModule {}

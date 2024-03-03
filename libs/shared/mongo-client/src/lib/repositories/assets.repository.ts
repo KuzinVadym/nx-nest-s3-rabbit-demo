@@ -1,18 +1,18 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Model, Connection } from 'mongoose';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
+import { PinoLogger } from 'nestjs-pino';
 
 import { Asset } from '../shemas/assets.schema';
 import { AbstractRepository } from './abstract.repository';
 
 @Injectable()
-export class AssetsRepository extends AbstractRepository<Asset> {
-  protected readonly logger = new Logger(AssetsRepository.name);
+export class AssetsMongoRepository extends AbstractRepository<Asset> {
 
   constructor(
+    logger: PinoLogger,
     @InjectModel(Asset.name) model: Model<Asset>,
-    @InjectConnection() connection: Connection,
   ) {
-    super(model, connection, 'Asset');
+    super(logger, model, 'Asset');
   }
 }

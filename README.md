@@ -30,9 +30,11 @@
     - api
         - assets
 - shared
+    - assets-interfaces
     - mongo-client
-    - queue
+    - postgres-client
     - s3-client
+    - queue
 
 ## Steps to play around
 
@@ -66,7 +68,7 @@ Troublesooting:
         `docker-compose build` you need to build js bundles, so if you working with one of the microservices and then want to `docker-compose up -d` you need 
         to run one of the comands from step 4 first, then `docker-compose build` -> `docker-compose up -d`. Sorry for inconveniences :sweat_smile:
   
-- pay attention that containers mentioned in docker-compose.yml working with each other in `rabbitmq_mongo_nodejs` network 
+- pay attention that containers mentioned in docker-compose.yml working with each other in `rabbitmq_db_nodejs` network 
         that's why in `.env` we have `ASETS_MANAGER_URL` and `DOCKER_COMPOSE_ASETS_MANAGER_URL`
 
 - Put all needed credentials to `.env` file before you will run `docker-compose up -d`, if the image was builded without needed env you will need to step back to step 4
