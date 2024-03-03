@@ -23,6 +23,9 @@
                 "libs/assets-manager/client/src/index.ts"
             ],
             "gateway-api-assets": ["libs/gateway/api/assets/src/index.ts"],
+            "http-payload-transformer": [
+                "libs/shared/http-payload-transformer/src/index.ts"
+            ],
             "mongo-client": ["libs/shared/mongo-client/src/index.ts"],
             "postgres-client": ["libs/shared/postgres-client/src/index.ts"],
             "queue": ["libs/shared/queue/src/index.ts"],
