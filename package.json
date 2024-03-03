@@ -15,6 +15,8 @@
     "@nestjs/platform-express": "^10.0.2",
     "@nestjs/typeorm": "^10.0.2",
     "@nrwl/webpack": "^17.3.2",
+    "@ts-rest/core": "^3.33.0",
+    "@ts-rest/nest": "^3.33.0",
     "amqp-connection-manager": "^4.1.14",
     "amqplib": "^0.10.3",
     "axios": "^1.6.7",
@@ -33,7 +35,8 @@
     "rxjs": "^7.8.0",
     "ts-exif-parser": "^0.2.2",
     "tslib": "^2.3.0",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@nestjs/schematics": "^10.0.1",
