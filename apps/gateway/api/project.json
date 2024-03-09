@@ -14,13 +14,16 @@
         "main": "apps/gateway/api/src/main.ts",
         "tsConfig": "apps/gateway/api/tsconfig.app.json",
         "webpackConfig": "apps/gateway/api/webpack.config.js",
-        "generatePackageJson": true
       },
       "configurations": {
+        "development": {
+          "generateLockfile": false
+        },
         "production": {
           "optimization": true,
           "extractLicenses": true,
-          "inspect": false
+          "inspect": false,
+          "generatePackageJson": true
         }
       }
     },
@@ -37,7 +40,8 @@
         "production": {
           "buildTarget": "gateway-api:build:production"
         }
-      }
+      },
+      "dependsOn": ["build"]
     },
     "test": {
       "executor": "@nx/jest:jest",

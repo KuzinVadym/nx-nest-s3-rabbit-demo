@@ -9,6 +9,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 
 async function bootstrap() {
+  console.log('1122221');
+  console.log('1122221');
+  console.log('1122221');
+
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api/v1';
   app.setGlobalPrefix(globalPrefix);
