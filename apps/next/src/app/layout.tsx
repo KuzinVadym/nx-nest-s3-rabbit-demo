@@ -12,7 +12,9 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body>{children}</body>
+            <body className="h-screen flex items-center justify-center">
+                {children}
+            </body>
         </html>
     );
 }
